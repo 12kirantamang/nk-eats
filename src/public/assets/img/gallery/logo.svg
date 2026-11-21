@@ -1,0 +1,9 @@
+<svg width="32" height="32" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="NK-EATS">
+<path d="M6 32H58C58 46.5 46.6 57 32 57C17.4 57 6 46.5 6 32Z" fill="#FF7A00"/>
+<rect x="21" y="57" width="22" height="4" rx="2" fill="#212529"/>
+<line x1="31" y1="27" x2="49" y2="5" stroke="#212529" stroke-width="3.2" stroke-linecap="round"/>
+<line x1="38" y1="27" x2="57" y2="9" stroke="#212529" stroke-width="3.2" stroke-linecap="round"/>
+<path d="M12 6V14C12 17 14 18 16 18C18 18 20 17 20 14V6" stroke="#212529" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+<line x1="16" y1="6" x2="16" y2="14" stroke="#212529" stroke-width="2.4" stroke-linecap="round"/>
+<line x1="16" y1="18" x2="16" y2="28" stroke="#212529" stroke-width="3" stroke-linecap="round"/>
+</svg>

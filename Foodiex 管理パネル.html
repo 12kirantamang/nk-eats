@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Foodiex 管理パネル</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/htm@3.1.1/dist/htm.umd.js"></script>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{font-family:'Plus Jakarta Sans','Noto Sans JP','Hiragino Sans','Yu Gothic',Meiryo,system-ui,sans-serif;background:#F7F8FA;color:#111827}
+.card{background:#fff;border-radius:1rem;box-shadow:0 2px 12px rgba(17,24,39,.05)}
+.fade{animation:f .25s ease}@keyframes f{from{opacity:0;transform:translateY(6px)}to{opacity:1}}
+</style></head>
+<body><div id="root"></div>
+<script>
+const {useState,useMemo}=React, h=htm.bind(React.createElement);
+const O='#F46A25',G='#10B981',Y='#F59E0B',R='#EF4444';
+const SC={Preparing:'bg-amber-100 text-amber-700',Pending:'bg-gray-100 text-gray-600','On the Way':'bg-blue-100 text-blue-700',Delivered:'bg-emerald-100 text-emerald-700',Delayed:'bg-orange-100 text-orange-700',Canceled:'bg-red-100 text-red-600'};
+const STAT=Object.keys(SC);
+const NAV=[['Overview','▦'],['Orders','🧾'],['Delivery','🚚'],['Restaurants','🏪'],['Drivers','🛵'],['Customers','👥'],['Products','🍔'],['Financials','💳'],['Promo & Discounts','🏷️'],['Complaints','💬'],['Reports','📊'],['Settings','⚙️']];
+const DR=['Omar Khaled','Youssef Adel','Karim Samy','Mostafa Nabil','Hassan Ali'];
+const mk=(i,c,r,d,a,s)=>({id:'#FX'+(1040+i),c,r,d,a,s});
+const ORD0=[mk(1,'Sara Mahmoud','Burger House','Omar Khaled',185,'On the Way'),mk(2,'Ali Hassan','Pizza Napoli','Youssef Adel',240,'Preparing'),mk(3,'Mona Ezzat','Sushi Nile','Karim Samy',410,'Delivered'),mk(4,'Tarek Fawzy','Koshary El Tahrir','—',95,'Pending'),mk(5,'Nour Said','Grill Master','Mostafa Nabil',320,'Delayed'),mk(6,'Hana Gamal','Burger House','Hassan Ali',150,'Delivered'),mk(7,'Ziad Wael','Pizza Napoli','Omar Khaled',275,'Canceled'),mk(8,'Dina Fouad','Sushi Nile','Youssef Adel',360,'On the Way'),mk(9,'Amr Diab','Grill Master','Karim Samy',210,'Preparing'),mk(10,'Laila Adly','Koshary El Tahrir','Hassan Ali',80,'Delivered')];
+const ST=[['Success orders',854,G,'✓'],['Delayed orders',253,Y,'⏱'],['Canceled orders',326,R,'✕']];
+const MON=[['September',G,[52,52,67,58,34]],['August',R,[30,34,39,32,21]],['July','#D4D81E',[58,48,66,80,52]]];
+const WK=['Sept 1-6','Sept 7-12','Sept 13-18','Sept 19-24','Sept 25-30'];
+const REV=[['Great service and fast delivery','Sara M.','👩'],['Always on time. Highly recommend','Ali H.','👨'],['Fresh food, friendly rider','Mona E.','👩‍🦰']];
+const AREAS=[['Cairo',O,48],['Mansoura',G,30],['Alex',R,22]];
+
+const Badge=({s})=>h`<span className=${'px-2.5 py-1 rounded-full text-xs font-semibold '+SC[s]}>${s}</span>`;
+const Tog=({on,f})=>h`<button onClick=${f} className=${'w-11 h-6 rounded-full p-0.5 transition '+(on?'bg-emerald-500':'bg-gray-300')}><span className=${'block w-5 h-5 bg-white rounded-full transition '+(on?'translate-x-5':'')}></span></button>`;
+const Btn=({c='',...p})=>h`<button ...${p} className=${'px-4 py-2 rounded-full text-sm font-semibold transition hover:opacity-90 '+(c||'bg-white shadow-sm')}/>`;
+const Modal=({t,x,children})=>h`<div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4" onClick=${x}><div className="card fade w-full max-w-md p-6" onClick=${e=>e.stopPropagation()}><div className="flex justify-between mb-4"><h3 className="text-lg font-bold">${t}</h3><button onClick=${x} className="text-gray-400">✕</button></div>${children}</div></div>`;
+
+function Chart(){
+  const [tip,setTip]=useState(null);
+  return h`<div className="relative"><svg viewBox="0 0 520 230" className="w-full">
+  ${[0,1,2,3,4].map(i=>h`<g key=${i}><line x1="40" x2="510" y1=${20+i*40} y2=${20+i*40} stroke="#eee"/><text x="34" y=${24+i*40} fontSize="10" textAnchor="end" fill="#888">${90-i*20}k</text></g>`)}
+  ${WK.map((w,wi)=>h`<g key=${w}>${MON.map(([m,col,v],mi)=>h`<rect key=${m} x=${55+wi*94+mi*16} y=${180-v[wi]*1.78} width="12" height=${v[wi]*1.78} rx="3" fill=${col} className="cursor-pointer hover:opacity-70" onMouseEnter=${()=>setTip({m,w,v:v[wi]})} onMouseLeave=${()=>setTip(null)}/>`)}<text x=${88+wi*94} y="200" fontSize="10" textAnchor="middle" fill="#666">${w}</text></g>`)}
+  </svg>${tip&&h`<div className="absolute top-0 right-2 bg-gray-900 text-white text-xs rounded-lg px-3 py-2">${tip.m} · ${tip.w}<br/><b>${tip.v},000 EGP</b></div>`}
+  <div className="flex gap-4 text-xs justify-center">${MON.map(([m,c])=>h`<span key=${m}><i className="inline-block w-2 h-2 rounded-full mr-1" style=${{background:c}}></i>${m}</span>`)}</div></div>`;
+}
+function Table({heads,rows}){return h`<div className="overflow-x-auto"><table className="w-full text-sm text-left"><thead><tr className="text-gray-400 text-xs uppercase">${heads.map(x=>h`<th key=${x} className="py-2 pr-4 font-medium">${x}</th>`)}</tr></thead><tbody>${rows.map((r,i)=>h`<tr key=${i} className="border-t border-gray-100 hover:bg-orange-50/40">${r.map((c,j)=>h`<td key=${j} className="py-3 pr-4 whitespace-nowrap">${c}</td>`)}</tr>`)}</tbody></table></div>`}
+
+function OrdTable({list,open}){return h`<${Table} heads=${['Order','Customer','Restaurant','Driver','Amount','Status','']} rows=${list.map(o=>[h`<b>${o.id}</b>`,o.c,o.r,o.d,o.a+' EGP',h`<${Badge} s=${o.s}/>`,h`<button className="text-orange-600 font-semibold" onClick=${()=>open(o)}>View</button>`])}/>`}
+
+function Overview({ord,open,toast}){return h`<div className="fade">
+ <div className="flex flex-wrap justify-between gap-2 mb-4"><div className="flex gap-2"><${Btn} onClick=${()=>toast('Filters panel opened')}>⛛ Filters</${Btn}><select className="px-4 py-2 rounded-full bg-white shadow-sm text-sm"><option>This Month</option><option>Last Month</option><option>This Year</option></select></div><${Btn} c="bg-[#F46A25] text-white" onClick=${()=>toast('Report exported: foodiex-overview.pdf')}>⬆ Export PDF</${Btn}></div>
+ <h2 className="text-2xl font-bold mb-3">Orders</h2>
+ <div className="grid lg:grid-cols-3 gap-5">
+  <div className="lg:col-span-2 space-y-5">
+   <div className="grid sm:grid-cols-3 gap-4">${ST.map(([l,n,c,i])=>h`<div key=${l} className="card p-5 flex justify-between items-center hover:-translate-y-0.5 transition"><div><div className="text-xs font-semibold">${l}</div><div className="text-3xl font-extrabold my-1" style=${{color:c}}>${n}</div><div className="text-xs text-gray-500">Orders</div></div><div className="w-11 h-11 rounded-full text-white grid place-items-center text-lg" style=${{background:c}}>${i}</div></div>`)}</div>
+   <div className="card p-6"><div className="flex justify-between items-center"><h3 className="text-xl font-bold">Total Revenue</h3><select className="bg-gray-100 rounded-full px-3 py-1.5 text-sm"><option>Last 3 Month</option></select></div>
+    <div className="flex justify-between text-sm my-4"><span className="font-medium">September Profit</span><span className="text-gray-500">Last 3 Month by week</span></div><${Chart}/>
+    <p className="text-sm mt-3">** Total Revenue during last 3 months <b className="text-emerald-500">105,698</b> EGP</p></div></div>
+  <div className="space-y-5">
+   <div className="card p-6"><h3 className="font-bold text-lg">Total Orders</h3><div className="flex justify-between items-center my-3"><div><span className="text-3xl font-extrabold text-emerald-500">1,450</span><div className="text-xs text-gray-500">Orders</div></div><div className="text-5xl">📦</div></div>
+    <div className="text-sm font-semibold mb-3">• Most in-demand delivery areas</div><div className="flex items-center gap-5"><div className="w-28 h-28 rounded-full grid place-items-center shrink-0" style=${{background:'conic-gradient('+O+' 0 48%,'+G+' 48% 78%,'+R+' 78% 100%)'}}><div className="w-16 h-16 bg-white rounded-full"></div></div><div className="space-y-2 text-sm font-semibold">${AREAS.map(([a,c,p])=>h`<div key=${a}><i className="inline-block w-2.5 h-2.5 rounded-full mr-2" style=${{background:c}}></i>${a} <span className="text-gray-400 font-normal">${p}%</span></div>`)}</div></div></div>
+   <div className="card p-6"><h3 className="font-bold text-lg mb-3">Customer Reviews</h3><div className="space-y-3">${REV.map(([t,n,a])=>h`<div key=${n} className="flex items-center gap-3"><div className="w-11 h-11 rounded-full bg-orange-100 grid place-items-center text-xl">${a}</div><div className="flex-1 bg-gray-100 rounded-full px-4 py-2 text-xs"><span className="text-amber-500">★★★★★</span> ${n}<br/>${t}</div></div>`)}</div></div></div></div>
+ <div className="card p-6 mt-5"><h3 className="font-bold text-lg mb-2">Live Active Orders</h3><${OrdTable} list=${ord.slice(0,6)} open=${open}/></div></div>`}
+
+function Orders({ord,setOrd,q,toast}){
+  const [tab,setTab]=useState('All');
+  const T=['All','Pending','Preparing','On the Way','Delivered','Canceled'];
+  const list=ord.filter(o=>(tab==='All'||o.s===tab)&&JSON.stringify(o).toLowerCase().includes(q.toLowerCase()));
+  const up=(id,k,v)=>{setOrd(ord.map(o=>o.id===id?{...o,[k]:v}:o));toast(id+' updated')};
+  return h`<div className="fade"><div className="flex gap-2 flex-wrap mb-4">${T.map(t=>h`<button key=${t} onClick=${()=>setTab(t)} className=${'px-4 py-2 rounded-full text-sm font-semibold '+(tab===t?'bg-[#F46A25] text-white':'bg-white')}>${t}</button>`)}</div>
+  <div className="card p-6"><${Table} heads=${['Order','Customer','Restaurant','Driver','Amount','Status']} rows=${list.map(o=>[h`<b>${o.id}</b>`,o.c,o.r,h`<select className="bg-gray-50 rounded-lg px-2 py-1" value=${o.d} onChange=${e=>up(o.id,'d',e.target.value)}><option>—</option>${DR.map(d=>h`<option key=${d}>${d}</option>`)}</select>`,o.a+' EGP',h`<select className=${'rounded-full px-2 py-1 text-xs font-semibold '+SC[o.s]} value=${o.s} onChange=${e=>up(o.id,'s',e.target.value)}>${STAT.map(s=>h`<option key=${s}>${s}</option>`)}</select>`])}/>${!list.length&&h`<p className="text-center text-gray-400 py-8">No orders match.</p>`}</div></div>`}
+
+function Delivery({ord}){
+  const act=ord.filter(o=>o.s==='On the Way'||o.s==='Delayed'||o.s==='Preparing');
+  return h`<div className="fade grid lg:grid-cols-5 gap-5"><div className="card lg:col-span-3 p-4"><div className="relative h-96 rounded-xl overflow-hidden" style=${{background:'linear-gradient(#e5e7eb 1px,transparent 1px) 0 0/48px 48px,linear-gradient(90deg,#e5e7eb 1px,transparent 1px) 0 0/48px 48px,#f3f4f6'}}>
+   ${act.map((o,i)=>h`<div key=${o.id} title=${o.d} className="absolute text-2xl transition-all duration-1000" style=${{left:(10+i*17)%80+'%',top:(15+i*23)%75+'%'}}>🛵<span className="block text-[10px] bg-white rounded px-1 shadow">${o.d.split(' ')[0]}</span></div>`)}<div className="absolute left-[45%] top-[45%] text-3xl">📍</div></div></div>
+  <div className="card lg:col-span-2 p-5"><h3 className="font-bold mb-3">In-transit deliveries</h3><div className="space-y-3">${act.map((o,i)=>h`<div key=${o.id} className="flex justify-between items-center border-b border-gray-100 pb-2 text-sm"><div><b>${o.id}</b> · ${o.c}<div className="text-xs text-gray-500">${o.d} → ${o.r}</div></div><div className="text-right"><div className="font-bold text-orange-600">${8+i*5} min</div><${Badge} s=${o.s}/></div></div>`)}</div></div></div>`}
+
+function Vendors({toast}){
+  const [v,setV]=useState([['Burger House',true,true],['Pizza Napoli',true,true],['Sushi Nile',false,true],['Grill Master',true,true],['Cairo Bites',false,false]]);
+  const [p,setP]=useState([['Classic Burger','Burger House',85,true],['Margherita','Pizza Napoli',120,true],['Salmon Roll','Sushi Nile',210,false],['Mixed Grill','Grill Master',260,true],['Koshary Bowl','Koshary El Tahrir',45,true]]);
+  return h`<div className="fade grid xl:grid-cols-2 gap-5"><div className="card p-6"><h3 className="font-bold text-lg mb-2">Restaurants / Vendors</h3><${Table} heads=${['Name','Open','Status']} rows=${v.map((r,i)=>[r[0],r[2]&&h`<${Tog} on=${r[1]} f=${()=>{setV(v.map((x,j)=>j===i?[x[0],!x[1],x[2]]:x));toast(r[0]+(r[1]?' closed':' opened'))}}/>`,r[2]?h`<${Badge} s="Delivered"/>`:h`<${Btn} c="bg-[#F46A25] text-white" onClick=${()=>{setV(v.map((x,j)=>j===i?[x[0],true,true]:x));toast(r[0]+' approved')}}>Approve</${Btn}>`])}/></div>
+  <div className="card p-6"><h3 className="font-bold text-lg mb-2">Products / Menu</h3><${Table} heads=${['Item','Vendor','Price','In stock']} rows=${p.map((r,i)=>[r[0],r[1],r[2]+' EGP',h`<${Tog} on=${r[3]} f=${()=>{setP(p.map((x,j)=>j===i?[...x.slice(0,3),!x[3]]:x));toast(r[0]+(r[3]?' marked out of stock':' back in stock'))}}/>`])}/></div></div>`}
+
+function Drivers(){
+  const D=[['Omar Khaled','Motorbike',4.9,1240,320,1],['Youssef Adel','Bicycle',4.7,860,150,1],['Karim Samy','Motorbike',4.8,1022,0,0],['Mostafa Nabil','Car',4.5,540,780,1],['Hassan Ali','Motorbike',4.6,712,95,0]];
+  return h`<div className="fade grid sm:grid-cols-2 xl:grid-cols-3 gap-5">${D.map(d=>h`<div key=${d[0]} className="card p-5 hover:-translate-y-0.5 transition"><div className="flex justify-between"><div className="flex gap-3 items-center"><div className="w-12 h-12 rounded-full bg-orange-100 grid place-items-center text-2xl">🛵</div><div><b>${d[0]}</b><div className="text-xs text-gray-500">${d[1]}</div></div></div><span className=${'text-xs font-semibold h-fit px-2 py-1 rounded-full '+(d[5]?'bg-emerald-100 text-emerald-700':'bg-gray-100 text-gray-500')}>${d[5]?'Online':'Offline'}</span></div><div className="grid grid-cols-3 text-center mt-4 text-sm"><div><b>★ ${d[2]}</b><div className="text-xs text-gray-400">Rating</div></div><div><b>${d[3]}</b><div className="text-xs text-gray-400">Deliveries</div></div><div><b className="text-orange-600">${d[4]}</b><div className="text-xs text-gray-400">COD EGP</div></div></div></div>`)}</div>`}
+
+function Complaints({toast}){
+  const [t,setT]=useState([['T-201','#FX1045','Food arrived cold','High','Open'],['T-202','#FX1043','Missing item: fries','Medium','Open'],['T-203','#FX1047','Rider was rude','High','Open'],['T-204','#FX1046','Wrong order delivered','Low','Resolved']]);
+  const [m,setM]=useState(null);const [txt,setTxt]=useState('');
+  const pc={High:'bg-red-100 text-red-600',Medium:'bg-amber-100 text-amber-700',Low:'bg-gray-100 text-gray-600'};
+  const done=(msg)=>{setT(t.map(x=>x[0]===m[0]?[...x.slice(0,4),'Resolved']:x));setM(null);setTxt('');toast(msg)};
+  return h`<div className="fade card p-6"><h3 className="font-bold text-lg mb-2">Support tickets</h3><${Table} heads=${['Ticket','Order','Issue','Priority','Status','']} rows=${t.map(x=>[x[0],x[1],x[2],h`<span className=${'px-2.5 py-1 rounded-full text-xs font-semibold '+pc[x[3]]}>${x[3]}</span>`,x[4],x[4]==='Open'&&h`<button className="text-orange-600 font-semibold" onClick=${()=>setM(x)}>Resolve</button>`])}/>
+  ${m&&h`<${Modal} t=${'Resolve '+m[0]} x=${()=>setM(null)}><p className="text-sm mb-2">${m[2]} (${m[1]})</p><textarea value=${txt} onChange=${e=>setTxt(e.target.value)} placeholder="Quick reply to customer..." className="w-full border rounded-xl p-3 text-sm h-24"></textarea><div className="flex gap-2 mt-3"><${Btn} c="bg-[#F46A25] text-white" onClick=${()=>done('Reply sent')}>Send reply</${Btn}><${Btn} c="bg-red-500 text-white" onClick=${()=>done('Refund issued')}>Refund order</${Btn}></div></${Modal}>`}</div>`}
+
+function Promo({toast}){
+  const [l,setL]=useState([['WELCOME20','20% off first order',true],['FREESHIP','Free delivery > 200 EGP',true],['FRIDAY15','15% off on Fridays',false]]);
+  const [add,setAdd]=useState(false);const [c,setC]=useState('');const [d,setD]=useState('');
+  return h`<div className="fade card p-6"><div className="flex justify-between mb-2"><h3 className="font-bold text-lg">Promo & Discounts</h3><${Btn} c="bg-[#F46A25] text-white" onClick=${()=>setAdd(true)}>+ New promo</${Btn}></div><${Table} heads=${['Code','Description','Active']} rows=${l.map((r,i)=>[h`<b>${r[0]}</b>`,r[1],h`<${Tog} on=${r[2]} f=${()=>setL(l.map((x,j)=>j===i?[x[0],x[1],!x[2]]:x))}/>`])}/>
+  ${add&&h`<${Modal} t="Add promo" x=${()=>setAdd(false)}><input value=${c} onChange=${e=>setC(e.target.value)} placeholder="Code" className="w-full border rounded-xl p-2 mb-2 text-sm"/><input value=${d} onChange=${e=>setD(e.target.value)} placeholder="Description" className="w-full border rounded-xl p-2 mb-3 text-sm"/><${Btn} c="bg-[#F46A25] text-white" onClick=${()=>{if(!c)return;setL([[c.toUpperCase(),d||'—',true],...l]);setAdd(false);setC('');setD('');toast('Promo added')}}>Save</${Btn}></${Modal}>`}</div>`}
+
+function Generic({name,toast}){
+  const data={Customers:[['Customer','Orders','Spent'],[['Sara Mahmoud',24,'4,310 EGP'],['Ali Hassan',18,'3,020 EGP'],['Mona Ezzat',31,'6,480 EGP'],['Nour Said',9,'1,150 EGP']]],
+  Financials:[['Date','Type','Amount'],[['Nov 18','Commission','+2,140 EGP'],['Nov 18','Driver payout','−1,380 EGP'],['Nov 17','Vendor payout','−9,200 EGP'],['Nov 17','Commission','+1,980 EGP']]],
+  Reports:[['Report','Period','Action'],[['Sales summary','Nov 2026',h`<button className="text-orange-600 font-semibold" onClick=${()=>toast('Sales summary exported')}>Export</button>`],['Driver performance','Nov 2026',h`<button className="text-orange-600 font-semibold" onClick=${()=>toast('Driver report exported')}>Export</button>`]]],
+  Settings:[['Setting','Value',''],[['Delivery zones','Cairo, Mansoura, Alex',''],['Base delivery fee','25 EGP',''],['Platform commission','15%',''],['Roles','Admin, Support, Finance','']]]}[name];
+  return h`<div className="fade card p-6"><h3 className="font-bold text-lg mb-2">${name}</h3><${Table} heads=${data[0]} rows=${data[1]}/></div>`}
+
+function App(){
+  const [view,setView]=useState('Overview'),[open,setOpen]=useState(false),[q,setQ]=useState(''),[ord,setOrd]=useState(ORD0),[sel,setSel]=useState(null),[toastM,setT]=useState(null),[prof,setProf]=useState(false);
+  const toast=m=>{setT(m);setTimeout(()=>setT(null),2400)};
+  const go=v=>{setView(v);setOpen(false)};
+  const fl=useMemo(()=>ord.filter(o=>JSON.stringify(o).toLowerCase().includes(q.toLowerCase())),[ord,q]);
+  const V={Overview:h`<${Overview} ord=${fl} open=${setSel} toast=${toast}/>`,Orders:h`<${Orders} ord=${ord} setOrd=${setOrd} q=${q} toast=${toast}/>`,Delivery:h`<${Delivery} ord=${ord}/>`,Restaurants:h`<${Vendors} toast=${toast}/>`,Products:h`<${Vendors} toast=${toast}/>`,Drivers:h`<${Drivers}/>`,'Promo & Discounts':h`<${Promo} toast=${toast}/>`,Complaints:h`<${Complaints} toast=${toast}/>`}[view]||h`<${Generic} name=${view} toast=${toast}/>`;
+  return h`<div className="min-h-screen flex">
+   ${open&&h`<div className="fixed inset-0 bg-black/30 z-30 lg:hidden" onClick=${()=>setOpen(false)}></div>`}
+   <aside className=${'fixed z-40 inset-y-0 left-0 w-60 bg-white flex flex-col transition-transform lg:translate-x-0 '+(open?'':'-translate-x-full')}>
+    <div className="px-6 py-6 text-2xl font-extrabold" style=${{color:O}}>🚚 Foodiex</div><div className="px-6 text-xs text-gray-400 mb-2">MAIN</div>
+    <nav className="flex-1 overflow-y-auto">${NAV.map(([n,i])=>h`<button key=${n} onClick=${()=>go(n)} className=${'w-full text-left px-6 py-3 text-sm font-medium flex gap-3 transition border-r-4 '+(view===n?'bg-[#FFF0E6] text-[#F46A25] border-[#F46A25]':'border-transparent text-gray-600 hover:bg-orange-50')}><span>${i}</span>${n}</button>`)}</nav>
+    <button onClick=${()=>toast('Signed out (demo)')} className="px-6 py-5 text-left text-sm font-semibold text-red-500">⇦ Sign out</button></aside>
+   <div className="flex-1 lg:ml-60 min-w-0"><header className="flex items-center gap-3 px-4 lg:px-8 py-4 border-b border-gray-200 bg-[#F7F8FA] sticky top-0 z-20">
+    <button className="lg:hidden text-2xl" onClick=${()=>setOpen(true)}>☰</button><h1 className="font-bold text-lg hidden sm:block">Hello Ahmed !</h1>
+    <input value=${q} onChange=${e=>setQ(e.target.value)} placeholder="🔍 Search anything here..." className="mx-auto flex-1 max-w-md rounded-full bg-white shadow-sm px-5 py-2.5 text-sm outline-none focus:ring-2 ring-orange-300"/>
+    <button className="relative w-10 h-10 rounded-full bg-white shadow-sm" onClick=${()=>toast('3 new notifications')}>🔔<span className="absolute top-0 right-0 bg-red-500 text-white text-[10px] w-4 h-4 rounded-full">3</span></button>
+    <div className="relative"><button onClick=${()=>setProf(!prof)} className="w-10 h-10 rounded-full bg-orange-200 text-lg">👨</button>${prof&&h`<div className="absolute right-0 mt-2 card p-2 w-40 text-sm"><div className="px-3 py-2 hover:bg-gray-50 rounded-lg cursor-pointer" onClick=${()=>{setProf(false);go('Settings')}}>Settings</div><div className="px-3 py-2 hover:bg-gray-50 rounded-lg cursor-pointer text-red-500" onClick=${()=>{setProf(false);toast('Signed out (demo)')}}>Sign out</div></div>`}</div></header>
+   <main className="p-4 lg:p-8">${V}</main></div>
+   ${sel&&h`<${Modal} t=${'Order '+sel.id} x=${()=>setSel(null)}><div className="space-y-2 text-sm"><div>Customer: <b>${sel.c}</b></div><div>Restaurant: <b>${sel.r}</b></div><div>Driver: <b>${sel.d}</b></div><div>Amount: <b>${sel.a} EGP</b></div><div>Status: <${Badge} s=${sel.s}/></div></div></${Modal}>`}
+   ${toastM&&h`<div className="fixed bottom-6 right-6 z-50 fade bg-gray-900 text-white text-sm px-5 py-3 rounded-xl shadow-lg">${toastM}</div>`}</div>`}
+ReactDOM.createRoot(document.getElementById('root')).render(h`<${App}/>`);
+/* Japanese localization layer */
+const J={'MAIN':'メイン','Overview':'概要','Orders':'注文','Delivery':'配達','Restaurants':'レストラン','Drivers':'ドライバー','Customers':'顧客','Products':'商品','Financials':'財務','Promo & Discounts':'プロモ・割引','Complaints':'クレーム','Reports':'レポート','Settings':'設定','⇦ Sign out':'⇦ ログアウト','Sign out':'ログアウト','Hello Ahmed !':'こんにちは、Ahmedさん！','⛛ Filters':'⛛ フィルター','This Month':'今月','Last Month':'先月','This Year':'今年','⬆ Export PDF':'⬆ PDF出力','Success orders':'成功した注文','Delayed orders':'遅延した注文','Canceled orders':'キャンセルされた注文','Total Revenue':'総売上','Last 3 Month':'過去3か月','September Profit':'9月の利益','Last 3 Month by week':'過去3か月（週別）','** Total Revenue during last 3 months':'※ 過去3か月の総売上','Total Orders':'総注文数','• Most in-demand delivery areas':'• 配達需要の高いエリア','Cairo':'カイロ','Mansoura':'マンスーラ','Alex':'アレクサンドリア','Customer Reviews':'お客様のレビュー','Great service and fast delivery':'素晴らしいサービスと迅速な配達','Always on time. Highly recommend':'いつも時間通り。おすすめです','Fresh food, friendly rider':'新鮮な料理と親切なライダー','Live Active Orders':'進行中の注文','Order':'注文','Customer':'顧客','Restaurant':'レストラン','Driver':'ドライバー','Amount':'金額','Status':'ステータス','View':'詳細','Preparing':'調理中','Pending':'保留中','On the Way':'配達中','Delivered':'配達済み','Delayed':'遅延','Canceled':'キャンセル','All':'すべて','No orders match.':'該当する注文がありません。','In-transit deliveries':'配達中の注文','min':'分','Restaurants / Vendors':'レストラン／加盟店','Products / Menu':'商品／メニュー','Name':'店名','Open':'営業中','Approve':'承認','Item':'品目','Vendor':'店舗','Price':'価格','In stock':'在庫あり','Online':'オンライン','Offline':'オフライン','Rating':'評価','Deliveries':'配達数','COD EGP':'代引き EGP','Motorbike':'バイク','Bicycle':'自転車','Car':'車','Support tickets':'サポートチケット','Ticket':'チケット','Issue':'内容','Priority':'優先度','High':'高','Medium':'中','Low':'低','Resolved':'解決済み','Resolve':'対応する','Send reply':'返信を送信','Refund order':'返金する','Food arrived cold':'料理が冷めていた','Missing item: fries':'商品不足：フライドポテト','Rider was rude':'ライダーの態度が悪い','Wrong order delivered':'注文違いの商品が届いた','+ New promo':'＋ 新規プロモ','Code':'コード','Description':'説明','Active':'有効','Add promo':'プロモを追加','Save':'保存','20% off first order':'初回注文20%オフ','Free delivery > 200 EGP':'200 EGP以上で配送無料','15% off on Fridays':'金曜日は15%オフ','Spent':'利用額','Date':'日付','Type':'種別','Commission':'手数料','Driver payout':'ドライバー支払い','Vendor payout':'加盟店支払い','Nov 18':'11月18日','Nov 17':'11月17日','Report':'レポート','Period':'期間','Action':'操作','Sales summary':'売上サマリー','Driver performance':'ドライバー実績','Nov 2026':'2026年11月','Export':'出力','Setting':'設定項目','Value':'値','Delivery zones':'配達エリア','Cairo, Mansoura, Alex':'カイロ、マンスーラ、アレクサンドリア','Base delivery fee':'基本配達料','Platform commission':'プラットフォーム手数料','Roles':'権限','Admin, Support, Finance':'管理者、サポート、経理','Customer:':'顧客：','Restaurant:':'レストラン：','Driver:':'ドライバー：','Amount:':'金額：','Status:':'ステータス：','September':'9月','August':'8月','July':'7月','Sept 1-6':'9/1-6','Sept 7-12':'9/7-12','Sept 13-18':'9/13-18','Sept 19-24':'9/19-24','Sept 25-30':'9/25-30','Filters panel opened':'フィルターパネルを開きました','Report exported: foodiex-overview.pdf':'レポートを出力しました：foodiex-overview.pdf','Signed out (demo)':'ログアウトしました（デモ）','3 new notifications':'新しい通知が3件あります','Reply sent':'返信を送信しました','Refund issued':'返金しました','Promo added':'プロモを追加しました','Sales summary exported':'売上サマリーを出力しました','Driver report exported':'ドライバーレポートを出力しました','🔍 Search anything here...':'🔍 ここで何でも検索...','Quick reply to customer...':'お客様への返信を入力...'};
+const JR=[[/^Order (.+)$/,'注文 $1'],[/^Resolve (T-.+)$/,'対応: $1'],[/^(.+) updated$/,'$1 を更新しました'],[/^(.+) closed$/,'$1 を閉店にしました'],[/^(.+) opened$/,'$1 の営業を開始しました'],[/^(.+) approved$/,'$1 を承認しました'],[/^(.+) marked out of stock$/,'$1 を在庫切れにしました'],[/^(.+) back in stock$/,'$1 を在庫ありに戻しました']];
+function jt(s){const k=s.trim();if(!k)return s;if(J[k])return s.replace(k,J[k]);for(const[r,v]of JR)if(r.test(k))return s.replace(k,k.replace(r,v));return s}
+function ja(){const w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);let n;while(n=w.nextNode()){const o=n.nodeValue,t=jt(o);if(t!==o){const p=n.parentNode;if(p&&p.tagName==='OPTION'&&!p.hasAttribute('value'))p.setAttribute('value',o.trim());n.nodeValue=t}}document.querySelectorAll('[placeholder]').forEach(e=>{const p=e.getAttribute('placeholder'),t=jt(p);if(t!==p)e.setAttribute('placeholder',t)})}
+new MutationObserver(ja).observe(document.body,{childList:true,subtree:true,characterData:true});ja();
+</script></body></html>
