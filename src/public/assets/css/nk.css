@@ -22,19 +22,19 @@ body{font-family:'Noto Sans JP','Plus Jakarta Sans',sans-serif}
 /* Larger menu cards with image hover zoom */
 #popular-menu .card.card-span,
 #western-menu .card.card-span,
-#nepal-menu .card.card-span {
+#nepali-menu .card.card-span {
   overflow:hidden;
   transition:transform .25s ease, box-shadow .25s ease;
 }
 #popular-menu .card.card-span:hover,
 #western-menu .card.card-span:hover,
-#nepal-menu .card.card-span:hover {
+#nepali-menu .card.card-span:hover {
   transform:translateY(-6px) scale(1.025);
   box-shadow:0 14px 30px rgba(33,37,41,.16);
 }
 #popular-menu .card.card-span img,
 #western-menu .card.card-span img,
-#nepal-menu .card.card-span img {
+#nepali-menu .card.card-span img {
   height:220px!important;
   min-height:220px;
   object-fit:cover;
@@ -42,12 +42,18 @@ body{font-family:'Noto Sans JP','Plus Jakarta Sans',sans-serif}
 }
 #popular-menu .card.card-span:hover img,
 #western-menu .card.card-span:hover img,
-#nepal-menu .card.card-span:hover img {
+#nepali-menu .card.card-span:hover img {
   transform:scale(1.08);
   filter:brightness(.92);
 }
 @media (max-width:575.98px) {
   #popular-menu .card.card-span img,
   #western-menu .card.card-span img,
-  #nepal-menu .card.card-span img { height:260px!important; }
+  #nepali-menu .card.card-span img { height:260px!important; }
 }
+#western-menu .card.card-span,
+#nepali-menu .card.card-span { display:flex; flex-direction:column; }
+#western-menu .card.card-span .card-body,
+#nepali-menu .card.card-span .card-body { min-height:92px; padding-bottom:.25rem!important; }
+#western-menu .nk-add,
+#nepali-menu .nk-add { min-height:48px; }

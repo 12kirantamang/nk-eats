@@ -66,6 +66,43 @@ class AdminAuthController extends Controller
         return response()->json(['message' => 'ログアウトしました']);
     }
 
+    public function register(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'max:255', 'unique:users,email'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'admin_key' => ['required', 'string'],
+        ]);
+
+        $registrationKey = (string) env('ADMIN_REGISTRATION_KEY', 'FOODIEX2026');
+        if (!hash_equals($registrationKey, $validated['admin_key'])) {
+            throw ValidationException::withMessages([
+                'admin_key' => ['The admin setup key is invalid.'],
+            ]);
+        }
+
+        $user = \App\Models\User::create([
+            'name' => $validated['name'],
+            'email' => strtolower($validated['email']),
+            'password' => Hash::make($validated['password']),
+            'is_admin' => true,
+            'role' => 'admin',
+        ]);
+
+        Auth::login($user);
+        $request->session()->regenerate();
+
+        return response()->json([
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'role' => $user->role,
+            ],
+        ], 201);
+    }
+
     private function isAdmin($user): bool
     {
         return (bool) ($user->is_admin ?? false) || in_array($user->role ?? '', ['admin', 'super_admin'], true);

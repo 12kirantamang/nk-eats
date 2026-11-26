@@ -133,7 +133,18 @@
             'Accept': 'application/json',
             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
           },
-          body: JSON.stringify({ cart, delivery: pickup ? 'pickup' : 'delivery', address, phone })
+          body: JSON.stringify({
+            cart: cart.map(item => {
+              const numericId = Number(item.id);
+              return {
+                ...item,
+                id: Number.isInteger(numericId) && numericId > 0 ? numericId : null
+              };
+            }),
+            delivery: pickup ? 'pickup' : 'delivery',
+            address,
+            phone
+          })
         });
         const data = await response.json();
         if (!response.ok) throw new Error(data.message || '決済を開始できませんでした。');

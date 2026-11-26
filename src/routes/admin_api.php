@@ -6,6 +6,7 @@ use App\Http\Middleware\EnsureUserIsAdmin;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/admin/login', [AdminAuthController::class, 'login']);
+Route::post('/admin/register', [AdminAuthController::class, 'register']);
 
 Route::middleware(['auth:sanctum', EnsureUserIsAdmin::class])->group(function () {
     Route::get('/admin/me', [AdminAuthController::class, 'user']);
@@ -16,6 +17,8 @@ Route::middleware(['auth:sanctum', EnsureUserIsAdmin::class])->group(function ()
     Route::get('/admin/menu', [AdminDashboardController::class, 'menu']);
     Route::post('/admin/products', [AdminDashboardController::class, 'createProduct']);
     Route::patch('/admin/products/{id}', [AdminDashboardController::class, 'updateProduct']);
+    Route::post('/admin/products/{id}', [AdminDashboardController::class, 'updateProduct']);
+    Route::post('/admin/products/{id}/image', [AdminDashboardController::class, 'updateProduct']);
     Route::delete('/admin/products/{id}', [AdminDashboardController::class, 'deleteProduct']);
     Route::patch('/admin/orders/{id}/status', [AdminDashboardController::class, 'updateOrder']);
     Route::patch('/admin/payments/{id}/status', [AdminDashboardController::class, 'updatePayment']);

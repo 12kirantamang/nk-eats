@@ -10,7 +10,16 @@
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   let cart = read(CK, []);
   let pendingCheckout = false;
-  const save = () => { write(CK, cart); render(); };
+  const save = () => {
+    write(CK, cart);
+    const n = cart.reduce((s, x) => s + x.qty, 0);
+    document.querySelectorAll('.nk-count').forEach(e => {
+      e.textContent = n;
+      e.classList.toggle('d-none', !n);
+    });
+    cancelAnimationFrame(save.renderFrame);
+    save.renderFrame = requestAnimationFrame(() => render());
+  };
 
   const UI = `
 <div class="offcanvas offcanvas-end" tabindex="-1" id="nkCart" aria-labelledby="nkCartTitle">
@@ -34,11 +43,13 @@
   <div class="modal-footer justify-content-between"><a href="#!" id="nk-to-login" class="small">ログインはこちら</a><button class="btn btn-danger px-4">登録する</button></div></form></div></div>
 <div class="nk-toast" id="nk-toast" role="status"></div>`;
 
-  function toast(msg) { const t = $('#nk-toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove('show'), 1800); }
+  function toast(msg) { const t = $('#nk-toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove('show'), 900); }
 
   function add(item) {
-    const i = cart.find(x => x.id === item.id);
-    i ? i.qty++ : cart.push({ ...item, qty: 1 });
+    cart = read(CK, cart);
+    const itemId = Number(item.id);
+    const i = cart.find(x => Number(x.id) === itemId);
+    i ? i.qty++ : cart.push({ ...item, id: itemId, qty: 1 });
     save(); toast(`「${item.name}」をカートに追加しました`);
   }
 
@@ -135,11 +146,30 @@
   document.addEventListener('DOMContentLoaded', () => {
     document.body.insertAdjacentHTML('beforeend', UI);
     // every "add to cart" button reads its card (name / image / price)
-    document.querySelectorAll('.nk-add').forEach(b => b.addEventListener('click', () => {
-      const col = b.closest('[class*="col-"]'), name = $('h5', col).textContent.trim(), p = $('[data-price]', col);
-      add({ id: name, name, price: +p.dataset.price, img: $('img', col).getAttribute('src') });
-      b.classList.add('added'); const old = b.innerHTML; b.innerHTML = '<i class="fas fa-check me-2"></i>追加しました'; setTimeout(() => { b.classList.remove('added'); b.innerHTML = old; }, 900);
-    }));
+    document.addEventListener('click', e => {
+      const button = e.target.closest('.nk-add');
+      if (!button) return;
+      const col = button.closest('[data-product-id]') || button.closest('[class*="col-"]');
+      if (!col) return;
+      const nameElement = col.querySelector('h5');
+      const priceElement = col.querySelector('[data-price]');
+      const imageElement = col.querySelector('img');
+      if (!nameElement || !priceElement || !imageElement) return;
+
+      const name = nameElement.textContent.trim();
+      const price = Number(priceElement.dataset.price);
+      const databaseId = Number(col.dataset.productId);
+      add({
+        id: Number.isInteger(databaseId) && databaseId > 0 ? databaseId : name,
+        name,
+        price,
+        img: imageElement.getAttribute('src')
+      });
+      button.classList.add('added');
+      const old = button.innerHTML;
+      button.innerHTML = '<i class="fas fa-check me-2"></i>追加しました';
+      setTimeout(() => { button.classList.remove('added'); button.innerHTML = old; }, 300);
+    });
     $('#nkCart').addEventListener('click', e => {
       const b = e.target.closest('[data-act]'); if (!b) return; const i = +b.dataset.i;
       if (b.dataset.act === 'inc') cart[i].qty++; else if (b.dataset.act === 'dec') cart[i].qty = Math.max(1, cart[i].qty - 1); else cart.splice(i, 1);
@@ -186,6 +216,16 @@
         showErr('#nk-login-err', error.message);
       }
     };
+    $('#nkCart').addEventListener('shown.bs.offcanvas', () => {
+      cart = read(CK, []);
+      render();
+    });
+    document.querySelectorAll('[data-bs-target="#nkCart"]').forEach(button => {
+      button.addEventListener('click', () => {
+        cart = read(CK, []);
+        render();
+      });
+    });
     render(); paintAuth();
   });
 })();

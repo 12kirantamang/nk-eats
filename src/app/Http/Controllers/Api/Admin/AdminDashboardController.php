@@ -77,21 +77,42 @@ class AdminDashboardController extends Controller
     public function orders()
     {
         $orders = Order::with('items')->latest()->get()->map(function ($order) {
+            $rawStatus = $order->payment_status_normalized ?: $order->payment_status;
+            $normalizedPayment = strtolower((string) $rawStatus);
+
+            if ($normalizedPayment === 'paid') {
+                $paymentStatus = 'Paid';
+            } elseif ($normalizedPayment === 'refunded') {
+                $paymentStatus = 'Refunded';
+            } elseif ($normalizedPayment === 'failed') {
+                $paymentStatus = 'Failed';
+            } else {
+                $paymentStatus = 'Pending';
+            }
+
+            $items = [];
+            foreach ($order->items as $item) {
+                $items[] = [
+                    'name' => $item->name,
+                    'price' => (int) $item->price,
+                    'quantity' => (int) $item->quantity,
+                ];
+            }
+
             return [
                 'id' => '#'.$order->order_number,
-                'customer' => $order->customer_name ?: 'ゲスト',
-                'restaurant' => $order->items->first()?->name ?: 'NK-EATS',
+                'customer' => $order->customer_name ?: ($order->customer_email ?: 'ゲスト'),
+                'email' => $order->customer_email,
+                'phone' => $order->customer_phone ?: $order->phone,
+                'restaurant' => count($items) ? $items[0]['name'] : 'NK-EATS',
                 'driver' => $order->driver ?: '—',
-                'amount' => $order->total,
-                'status' => $order->status,
-                'paymentStatus' => $order->payment_status,
-                'address' => $order->address,
-                'phone' => $order->phone,
-                'items' => $order->items->map(fn ($item) => [
-                    'name' => $item->name,
-                    'price' => $item->price,
-                    'quantity' => $item->quantity,
-                ]),
+                'amount' => (int) ($order->total_amount ?? $order->total),
+                'status' => $order->order_status ?: $order->status,
+                'paymentStatus' => $paymentStatus,
+                'paymentMethod' => $order->payment_method,
+                'stripePaymentIntentId' => $order->stripe_payment_intent_id,
+                'address' => $order->delivery_address ?: $order->address,
+                'items' => $items,
                 'createdAt' => $order->created_at?->toDateTimeString(),
             ];
         });
@@ -110,7 +131,11 @@ class AdminDashboardController extends Controller
         $order = Order::where('order_number', $orderNumber)->orWhere('id', $orderNumber)->first();
 
         if ($order) {
-            $order->update(array_filter($validated, fn ($value) => $value !== null));
+            $update = array_filter($validated, fn ($value) => $value !== null);
+            if (isset($update['status'])) {
+                $update['order_status'] = $update['status'];
+            }
+            $order->update($update);
         }
 
         return response()->json(['id' => $id, 'updated' => $validated]);
@@ -119,14 +144,24 @@ class AdminDashboardController extends Controller
     public function updatePayment(Request $request, string $id)
     {
         $validated = $request->validate([
-            'status' => ['required', 'in:Paid,Failed,Refunded'],
+            'status' => ['required', 'in:Paid,Pending,Failed,Refunded'],
             'reference' => ['nullable', 'string', 'max:255'],
             'note' => ['nullable', 'string', 'max:2000'],
         ]);
 
+        $orderNumber = str_starts_with($id, '#') ? substr($id, 1) : $id;
+        $order = Order::where('order_number', $orderNumber)->orWhere('id', $orderNumber)->firstOrFail();
+        $normalized = strtolower($validated['status']);
+
+        $order->update([
+            'payment_status' => $validated['status'],
+            'payment_status_normalized' => $normalized,
+            'stripe_payment_intent_id' => $validated['reference'] ?: $order->stripe_payment_intent_id,
+        ]);
+
         if (DB::getSchemaBuilder()->hasTable('admin_payment_updates')) {
             DB::table('admin_payment_updates')->insert(array_merge($validated, [
-                'payment_id' => $id,
+                'payment_id' => $orderNumber,
                 'admin_id' => $request->user()?->id,
                 'audit_note' => $validated['note'] ?? null,
                 'created_at' => now(),
@@ -238,7 +273,7 @@ class AdminDashboardController extends Controller
             'price' => ['required', 'integer', 'min:1'],
             'image' => ['nullable', 'image', 'max:5120'],
             'image_path' => ['nullable', 'string', 'max:500'],
-            'category' => ['nullable', 'string', 'max:255'],
+            'category' => ['nullable', 'in:洋食,ネパール料理'],
             'in_stock' => ['sometimes', 'boolean'],
             'is_available' => ['sometimes', 'boolean'],
         ]);
@@ -279,7 +314,7 @@ class AdminDashboardController extends Controller
             'price' => ['sometimes', 'integer', 'min:1'],
             'image' => ['sometimes', 'image', 'max:5120'],
             'image_path' => ['sometimes', 'nullable', 'string', 'max:500'],
-            'category' => ['sometimes', 'nullable', 'string', 'max:255'],
+            'category' => ['sometimes', 'nullable', 'in:洋食,ネパール料理'],
             'in_stock' => ['sometimes', 'boolean'],
             'is_available' => ['sometimes', 'boolean'],
         ]);
@@ -328,7 +363,18 @@ class AdminDashboardController extends Controller
             'image' => $product->image,
             'image_url' => $product->image_path
                 ? asset('storage/'.$product->image_path)
-                : ($product->image ? asset($product->image) : null),
+                : ($product->image ? asset($product->image) : asset('assets/img/gallery/cheese-burger.png')),
         ];
+    }
+
+    public function publicProducts()
+    {
+        $products = Product::query()
+            ->where('is_available', true)
+            ->latest()
+            ->get()
+            ->map(fn (Product $product) => $this->serializeProduct($product));
+
+        return response()->json(['products' => $products]);
     }
 }

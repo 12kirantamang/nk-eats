@@ -319,7 +319,7 @@
                   <div class="carousel-item" data-bs-interval="5000">
                     <div class="row gx-3 h-100 align-items-center">
                       <div class="col-sm-6 col-md-4 col-xl mb-5 h-100">
-                        <div class="card card-span h-100 rounded-3"><img class="img-fluid rounded-3 h-100" src="assets/img/gallery/cheese-burger.png" alt="..." />
+                        <div class="card card-span h-100 rounded-3"><img class="img-fluid rounded-3 h-100" src="assets/img/gallery/cheese-burger.png" alt="..." style="height:220px!important;min-height:220px!important;width:100%;object-fit:cover" />
                           <div class="card-body ps-0">
                             <h5 class="fw-bold text-1000 text-truncate mb-1">チーズバーガー</h5>
                             <div><span class="text-warning me-2"><i class="fas fa-map-marker-alt"></i></span><span class="text-primary">NK-EATS</span></div><span class="text-1000 fw-bold" data-price="690">¥690<small class="fw-normal">（税込）</small></span>
@@ -368,171 +368,7 @@
                   <div class="carousel-item">
                     <div class="row gx-3 h-100 align-items-center">
                       <div class="col-sm-6 col-md-4 col-xl mb-5 h-100">
-                        <div class="card card-span h-100 rounded-3"><img class="img-fluid rounded-3 h-100" src="assets/img/gallery/cheese-burger.png" alt="..." />
-                          <div class="card-body ps-0">
-                            <h5 class="fw-bold text-1000 text-truncate mb-1">チーズバーガー</h5>
-                            <div><span class="text-warning me-2"><i class="fas fa-map-marker-alt"></i></span><span class="text-primary">NK-EATS</span></div><span class="text-1000 fw-bold" data-price="690">¥690<small class="fw-normal">（税込）</small></span>
-                          </div>
-                        </div>
-                        <div class="d-grid gap-2"><button class="btn btn-lg btn-danger nk-add" type="button"><i class="fas fa-cart-plus me-2"></i>カートに追加</button></div>
-                      </div>
-                      <div class="col-sm-6 col-md-4 col-xl mb-5 h-100">
-                        <div class="card card-span h-100 rounded-3"><img class="img-fluid rounded-3 h-100" src="assets/img/gallery/toffes-cake.png" alt="..." />
-                          <div class="card-body ps-0">
-                            <h5 class="fw-bold text-1000 text-truncate mb-1">トフィーケーキ</h5>
-                            <div><span class="text-warning me-2"><i class="fas fa-map-marker-alt"></i></span><span class="text-primary">NK-EATS</span></div><span class="text-1000 fw-bold" data-price="480">¥480<small class="fw-normal">（税込）</small></span>
-                          </div>
-                        </div>
-                        <div class="d-grid gap-2"><button class="btn btn-lg btn-danger nk-add" type="button"><i class="fas fa-cart-plus me-2"></i>カートに追加</button></div>
-                      </div>
-                      <div class="col-sm-6 col-md-4 col-xl mb-5 h-100">
-                        <div class="card card-span h-100 rounded-3"><img class="img-fluid rounded-3 h-100" src="assets/img/gallery/dancake.png" alt="..." />
-                          <div class="card-body ps-0">
-                            <h5 class="fw-bold text-1000 text-truncate mb-1">ダンケーキ</h5>
-                            <div><span class="text-warning me-2"><i class="fas fa-map-marker-alt"></i></span><span class="text-primary">NK-EATS</span></div><span class="text-1000 fw-bold" data-price="380">¥380<small class="fw-normal">（税込）</small></span>
-                          </div>
-                        </div>
-                        <div class="d-grid gap-2"><button class="btn btn-lg btn-danger nk-add" type="button"><i class="fas fa-cart-plus me-2"></i>カートに追加</button></div>
-                      </div>
-                      <div class="col-sm-6 col-md-4 col-xl mb-5 h-100">
-                        <div class="card card-span h-100 rounded-3"><img class="img-fluid rounded-3 h-100" src="assets/img/gallery/crispy-sandwitch.png" alt="..." />
-                          <div class="card-body ps-0">
-                            <h5 class="fw-bold text-1000 text-truncate mb-1">クリスピーサンド</h5>
-                            <div><span class="text-warning me-2"><i class="fas fa-map-marker-alt"></i></span><span class="text-primary">NK-EATS</span></div><span class="text-1000 fw-bold" data-price="580">¥580<small class="fw-normal">（税込）</small></span>
-                          </div>
-                        </div>
-                        <div class="d-grid gap-2"><button class="btn btn-lg btn-danger nk-add" type="button"><i class="fas fa-cart-plus me-2"></i>カートに追加</button></div>
-                      </div>
-                      <div class="col-sm-6 col-md-4 col-xl mb-5 h-100">
-                        <div class="card card-span h-100 rounded-3"><img class="img-fluid rounded-3 h-100" src="assets/img/gallery/thai-soup.png" alt="..." />
-                          <div class="card-body ps-0">
-                            <h5 class="fw-bold text-1000 text-truncate mb-1">タイスープ</h5>
-                            <div><span class="text-warning me-2"><i class="fas fa-map-marker-alt"></i></span><span class="text-primary">NK-EATS</span></div><span class="text-1000 fw-bold" data-price="850">¥850<small class="fw-normal">（税込）</small></span>
-                          </div>
-                        </div>
-                        <div class="d-grid gap-2"><button class="btn btn-lg btn-danger nk-add" type="button"><i class="fas fa-cart-plus me-2"></i>カートに追加</button></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <button class="carousel-control-prev carousel-icon" type="button" data-bs-target="#carouselPopularItems" data-bs-slide="prev"><span class="carousel-control-prev-icon hover-top-shadow" aria-hidden="true"></span><span class="visually-hidden">前へ</span></button>
-                <button class="carousel-control-next carousel-icon" type="button" data-bs-target="#carouselPopularItems" data-bs-slide="next"><span class="carousel-control-next-icon hover-top-shadow" aria-hidden="true"></span><span class="visually-hidden">次へ </span></button>
-              </div>
-            </div>
-          </div>
-        </div><!-- end of .container-->
-
-      </section>
-        <div class="container">
-          <div class="row h-100">
-            <div class="col-lg-7 mx-auto text-center mt-7 mb-5">
-              <h5 class="fw-bold fs-3 fs-lg-5 lh-sm">ネパール料理</h5>
-            </div>
-            <div class="col-12">
-              <div class="carousel slide" id="carouselPopularItems" data-bs-touch="false" data-bs-interval="false">
-                <div class="carousel-inner">
-                  <div class="carousel-item active" data-bs-interval="10000">
-                    <div class="row gx-3 h-100 align-items-center">
-                      <div class="col-sm-6 col-md-4 col-xl mb-5 h-100">
-                        <div class="card card-span h-100 rounded-3"><img class="img-fluid rounded-3 h-100" src="assets/img/gallery/nepali1.jpeg" alt="ネパール定食" />
-                          <div class="card-body ps-0">
-                            <h5 class="fw-bold text-1000 text-truncate mb-1">ネパール定食</h5>
-                            <div><span class="text-warning me-2"><i class="fas fa-map-marker-alt"></i></span><span class="text-primary">NK-EATS</span></div><span class="text-1000 fw-bold" data-price="690">¥690<small class="fw-normal">（税込）</small></span>
-                          </div>
-                        </div>
-                        <div class="d-grid gap-2"><button class="btn btn-lg btn-danger nk-add" type="button"><i class="fas fa-cart-plus me-2"></i>カートに追加</button></div>
-                      </div>
-                      <div class="col-sm-6 col-md-4 col-xl mb-5 h-100">
-                        <div class="card card-span h-100 rounded-3"><img class="img-fluid rounded-3 h-100" src="assets/img/gallery/nepali2.jpeg" alt="モモ" />
-                          <div class="card-body ps-0">
-                            <h5 class="fw-bold text-1000 text-truncate mb-1">モモ</h5>
-                            <div><span class="text-warning me-2"><i class="fas fa-map-marker-alt"></i></span><span class="text-primary">NK-EATS</span></div><span class="text-1000 fw-bold" data-price="480">¥480<small class="fw-normal">（税込）</small></span>
-                          </div>
-                        </div>
-                        <div class="d-grid gap-2"><button class="btn btn-lg btn-danger nk-add" type="button"><i class="fas fa-cart-plus me-2"></i>カートに追加</button></div>
-                      </div>
-                      <div class="col-sm-6 col-md-4 col-xl mb-5 h-100">
-                        <div class="card card-span h-100 rounded-3"><img class="img-fluid rounded-3 h-100" src="assets/img/gallery/nepali3.jpeg" alt="ネパール風チャウメン" />
-                          <div class="card-body ps-0">
-                            <h5 class="fw-bold text-1000 text-truncate mb-1">ネパール風チャウメン</h5>
-                            <div><span class="text-warning me-2"><i class="fas fa-map-marker-alt"></i></span><span class="text-primary">NK-EATS</span></div><span class="text-1000 fw-bold" data-price="380">¥380<small class="fw-normal">（税込）</small></span>
-                          </div>
-                        </div>
-                        <div class="d-grid gap-2"><button class="btn btn-lg btn-danger nk-add" type="button"><i class="fas fa-cart-plus me-2"></i>カートに追加</button></div>
-                      </div>
-                      <div class="col-sm-6 col-md-4 col-xl mb-5 h-100">
-                        <div class="card card-span h-100 rounded-3"><img class="img-fluid rounded-3 h-100" src="assets/img/gallery/nepali4.jpeg" alt="ネパール風ピザ" />
-                          <div class="card-body ps-0">
-                            <h5 class="fw-bold text-1000 text-truncate mb-1">ネパール風ピザ</h5>
-                            <div><span class="text-warning me-2"><i class="fas fa-map-marker-alt"></i></span><span class="text-primary">NK-EATS</span></div><span class="text-1000 fw-bold" data-price="580">¥580<small class="fw-normal">（税込）</small></span>
-                          </div>
-                        </div>
-                        <div class="d-grid gap-2"><button class="btn btn-lg btn-danger nk-add" type="button"><i class="fas fa-cart-plus me-2"></i>カートに追加</button></div>
-                      </div>
-                      <div class="col-sm-6 col-md-4 col-xl mb-5 h-100">
-                        <div class="card card-span h-100 rounded-3"><img class="img-fluid rounded-3 h-100" src="assets/img/gallery/nepali5.jpeg" alt="ネパール料理セット" />
-                          <div class="card-body ps-0">
-                            <h5 class="fw-bold text-1000 text-truncate mb-1">ネパール料理セット</h5>
-                            <div><span class="text-warning me-2"><i class="fas fa-map-marker-alt"></i></span><span class="text-primary">NK-EATS</span></div><span class="text-1000 fw-bold" data-price="850">¥850<small class="fw-normal">（税込）</small></span>
-                          </div>
-                        </div>
-                        <div class="d-grid gap-2"><button class="btn btn-lg btn-danger nk-add" type="button"><i class="fas fa-cart-plus me-2"></i>カートに追加</button></div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="carousel-item" data-bs-interval="5000">
-                    <div class="row gx-3 h-100 align-items-center">
-                      <div class="col-sm-6 col-md-4 col-xl mb-5 h-100">
-                        <div class="card card-span h-100 rounded-3"><img class="img-fluid rounded-3 h-100" src="assets/img/gallery/cheese-burger.png" alt="..." />
-                          <div class="card-body ps-0">
-                            <h5 class="fw-bold text-1000 text-truncate mb-1">チーズバーガー</h5>
-                            <div><span class="text-warning me-2"><i class="fas fa-map-marker-alt"></i></span><span class="text-primary">NK-EATS</span></div><span class="text-1000 fw-bold" data-price="690">¥690<small class="fw-normal">（税込）</small></span>
-                          </div>
-                        </div>
-                        <div class="d-grid gap-2"><button class="btn btn-lg btn-danger nk-add" type="button"><i class="fas fa-cart-plus me-2"></i>カートに追加</button></div>
-                      </div>
-                      <div class="col-sm-6 col-md-4 col-xl mb-5 h-100">
-                        <div class="card card-span h-100 rounded-3"><img class="img-fluid rounded-3 h-100" src="assets/img/gallery/toffes-cake.png" alt="..." />
-                          <div class="card-body ps-0">
-                            <h5 class="fw-bold text-1000 text-truncate mb-1">トフィーケーキ</h5>
-                            <div><span class="text-warning me-2"><i class="fas fa-map-marker-alt"></i></span><span class="text-primary">NK-EATS</span></div><span class="text-1000 fw-bold" data-price="480">¥480<small class="fw-normal">（税込）</small></span>
-                          </div>
-                        </div>
-                        <div class="d-grid gap-2"><button class="btn btn-lg btn-danger nk-add" type="button"><i class="fas fa-cart-plus me-2"></i>カートに追加</button></div>
-                      </div>
-                      <div class="col-sm-6 col-md-4 col-xl mb-5 h-100">
-                        <div class="card card-span h-100 rounded-3"><img class="img-fluid rounded-3 h-100" src="assets/img/gallery/dancake.png" alt="..." />
-                          <div class="card-body ps-0">
-                            <h5 class="fw-bold text-1000 text-truncate mb-1">ダンケーキ</h5>
-                            <div><span class="text-warning me-2"><i class="fas fa-map-marker-alt"></i></span><span class="text-primary">NK-EATS</span></div><span class="text-1000 fw-bold" data-price="380">¥380<small class="fw-normal">（税込）</small></span>
-                          </div>
-                        </div>
-                        <div class="d-grid gap-2"><button class="btn btn-lg btn-danger nk-add" type="button"><i class="fas fa-cart-plus me-2"></i>カートに追加</button></div>
-                      </div>
-                      <div class="col-sm-6 col-md-4 col-xl mb-5 h-100">
-                        <div class="card card-span h-100 rounded-3"><img class="img-fluid rounded-3 h-100" src="assets/img/gallery/crispy-sandwitch.png" alt="..." />
-                          <div class="card-body ps-0">
-                            <h5 class="fw-bold text-1000 text-truncate mb-1">クリスピーサンド</h5>
-                            <div><span class="text-warning me-2"><i class="fas fa-map-marker-alt"></i></span><span class="text-primary">NK-EATS</span></div><span class="text-1000 fw-bold" data-price="580">¥580<small class="fw-normal">（税込）</small></span>
-                          </div>
-                        </div>
-                        <div class="d-grid gap-2"><button class="btn btn-lg btn-danger nk-add" type="button"><i class="fas fa-cart-plus me-2"></i>カートに追加</button></div>
-                      </div>
-                      <div class="col-sm-6 col-md-4 col-xl mb-5 h-100">
-                        <div class="card card-span h-100 rounded-3"><img class="img-fluid rounded-3 h-100" src="assets/img/gallery/thai-soup.png" alt="..." />
-                          <div class="card-body ps-0">
-                            <h5 class="fw-bold text-1000 text-truncate mb-1">タイスープ</h5>
-                            <div><span class="text-warning me-2"><i class="fas fa-map-marker-alt"></i></span><span class="text-primary">NK-EATS</span></div><span class="text-1000 fw-bold" data-price="850">¥850<small class="fw-normal">（税込）</small></span>
-                          </div>
-                        </div>
-                        <div class="d-grid gap-2"><button class="btn btn-lg btn-danger nk-add" type="button"><i class="fas fa-cart-plus me-2"></i>カートに追加</button></div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="carousel-item">
-                    <div class="row gx-3 h-100 align-items-center">
-                      <div class="col-sm-6 col-md-4 col-xl mb-5 h-100">
-                        <div class="card card-span h-100 rounded-3"><img class="img-fluid rounded-3 h-100" src="assets/img/gallery/cheese-burger.png" alt="..." />
+                        <div class="card card-span h-100 rounded-3"><img class="img-fluid rounded-3 h-100" src="assets/img/gallery/cheese-burger.png" alt="..." style="height:220px!important;min-height:220px!important;width:100%;object-fit:cover" />
                           <div class="card-body ps-0">
                             <h5 class="fw-bold text-1000 text-truncate mb-1">チーズバーガー</h5>
                             <div><span class="text-warning me-2"><i class="fas fa-map-marker-alt"></i></span><span class="text-primary">NK-EATS</span></div><span class="text-1000 fw-bold" data-price="690">¥690<small class="fw-normal">（税込）</small></span>
@@ -840,54 +676,45 @@
     <script src="https://polyfill.io/v3/polyfill.min.js?features=window.scroll"></script>
     <script src="vendors/fontawesome/all.min.js"></script>
     <script src="assets/js/theme.js"></script>
-    <script src="assets/js/nk-cart.js?v=20261119-auth"></script>
+    <script src="assets/js/nk-cart.js?v=20261124-no-double-add"></script>
 
     <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@200;300;400;600;700;900&amp;display=swap" rel="stylesheet">
     <script>
       document.addEventListener('DOMContentLoaded', async () => {
         try {
-          const response = await fetch('/api/products', { headers: { 'Accept': 'application/json' } });
+          const response = await fetch('/api/products?t=' + Date.now(), { headers: { 'Accept': 'application/json', 'Cache-Control': 'no-cache' } });
           const data = await response.json();
           const products = data.products || [];
-          const menu = document.querySelector('#western-menu');
-          if (!menu || !products.length) return;
+          const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#039;' }[char]));
 
-          const cards = menu.querySelectorAll('.carousel-inner');
-          if (!cards.length) return;
+          const renderCarousel = (sectionId, category, title) => {
+            let section = document.querySelector(sectionId);
+            if (!section) {
+              const western = document.querySelector('#western-menu');
+              section = document.createElement('section');
+              section.id = sectionId.replace('#', '');
+              section.className = 'py-4 overflow-hidden';
+              western?.insertAdjacentElement('afterend', section);
+            }
 
-          const firstInner = cards[0];
-          firstInner.innerHTML = `<div class="carousel-item active"><div class="row gx-3 h-100 align-items-center">${products.map(product => `
-            <div class="col-sm-6 col-md-4 col-xl mb-5 h-100" data-product-id="${product.id}">
-              <div class="card card-span h-100 rounded-3">
-                <img class="img-fluid rounded-3 h-100" src="${product.image_url}" alt="${product.name}" style="object-fit:cover;min-height:220px">
-                <div class="card-body ps-0">
-                  <h5 class="fw-bold text-1000 text-truncate mb-1">${product.name}</h5>
-                  <p class="small text-muted">${product.description || ''}</p>
-                  <div><span class="text-warning me-2"><i class="fas fa-map-marker-alt"></i></span><span class="text-primary">${product.category || 'NK-EATS'}</span></div>
-                  <span class="text-1000 fw-bold" data-price="${product.price}">¥${Number(product.price).toLocaleString('ja-JP')}<small class="fw-normal">（税込）</small></span>
-                </div>
-              </div>
-              <div class="d-grid gap-2"><button class="btn btn-lg btn-danger nk-add" type="button"><i class="fas fa-cart-plus me-2"></i>カートに追加</button></div>
-            </div>`).join('')}</div></div>`;
+            const list = products.filter(product => product.category === category);
+            const carouselId = sectionId === '#western-menu' ? 'carouselWesternMenu' : 'carouselNepaliMenu';
+            const chunks = [];
+            for (let i = 0; i < list.length; i += 5) chunks.push(list.slice(i, i + 5));
 
-          document.querySelectorAll('#western-menu .nk-add').forEach(button => {
-            button.addEventListener('click', () => {
-              const col = button.closest('[data-product-id]');
-              const name = col.querySelector('h5').textContent.trim();
-              const price = Number(col.querySelector('[data-price]').dataset.price);
-              const img = col.querySelector('img').getAttribute('src');
-              const cartKey = 'nk-eats-cart';
-              let cart = [];
-              try { cart = JSON.parse(localStorage.getItem(cartKey) || '[]'); } catch (_) {}
-              const id = Number(col.dataset.productId);
-              const existing = cart.find(item => item.id === id);
-              if (existing) existing.qty++; else cart.push({ id, name, price, img, qty: 1 });
-              localStorage.setItem(cartKey, JSON.stringify(cart));
-              document.querySelectorAll('.nk-count').forEach(element => {
-                element.textContent = cart.reduce((sum, item) => sum + item.qty, 0);
-              });
-            });
-          });
+            section.innerHTML = `<div class="container"><div class="row h-100"><div class="col-lg-7 mx-auto text-center mt-7 mb-5"><h5 class="fw-bold fs-3 fs-lg-5 lh-sm">${esc(title)}</h5></div><div class="col-12"><div class="carousel slide" id="${carouselId}" data-bs-touch="false" data-bs-interval="false"><div class="carousel-inner">${(chunks.length ? chunks : [[]]).map((chunk, index) => `
+              <div class="carousel-item${index === 0 ? ' active' : ''}"${index === 0 ? ' data-bs-interval="10000"' : ''}><div class="row gx-3 h-100 align-items-center">${chunk.length ? chunk.map(product => `
+                <div class="col-sm-6 col-md-4 col-xl mb-5 h-100" data-product-id="${Number(product.id)}">
+                  <div class="card card-span h-100 rounded-3"><img class="img-fluid rounded-3 h-100" src="${esc(product.image_url || '/assets/img/gallery/cheese-burger.png')}" alt="${esc(product.name)}" style="height:220px!important;min-height:220px!important;width:100%;object-fit:cover" onerror="this.onerror=null;this.src='/assets/img/gallery/cheese-burger.png'">
+                    <div class="card-body ps-0"><h5 class="fw-bold text-1000 text-truncate mb-1">${esc(product.name)}</h5><div><span class="text-warning me-2"><i class="fas fa-map-marker-alt"></i></span><span class="text-primary">NK-EATS</span></div><span class="text-1000 fw-bold" data-price="${Number(product.price)}">¥${Number(product.price).toLocaleString('ja-JP')}<small class="fw-normal">（税込）</small></span></div>
+                  </div>
+                  <div class="d-grid gap-2"><button class="btn btn-lg btn-danger nk-add" type="button"><i class="fas fa-cart-plus me-2"></i>カートに追加</button></div>
+                </div>`).join('') : '<div class="col-12 text-center text-muted py-5">商品がありません。</div>'}</div></div>`).join('')}</div><button class="carousel-control-prev carousel-icon" type="button" data-bs-target="#${carouselId}" data-bs-slide="prev"><span class="carousel-control-prev-icon hover-top-shadow" aria-hidden="true"></span><span class="visually-hidden">前へ</span></button><button class="carousel-control-next carousel-icon" type="button" data-bs-target="#${carouselId}" data-bs-slide="next"><span class="carousel-control-next-icon hover-top-shadow" aria-hidden="true"></span><span class="visually-hidden">次へ</span></button></div></div></div></div>`;
+
+          };
+
+          renderCarousel('#western-menu', '洋食', '洋食');
+          renderCarousel('#nepali-menu', 'ネパール料理', 'ネパール料理');
         } catch (error) {
           console.error('Unable to load storefront products', error);
         }

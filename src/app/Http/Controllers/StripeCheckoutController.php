@@ -20,13 +20,15 @@ class StripeCheckoutController extends Controller
     {
         $validated = $request->validate([
             'cart' => ['required', 'array', 'min:1'],
-            'cart.*.id' => ['nullable', 'integer'],
+            'cart.*.id' => ['nullable'],
             'cart.*.name' => ['required', 'string', 'max:255'],
             'cart.*.price' => ['required', 'integer', 'min:1'],
             'cart.*.qty' => ['required', 'integer', 'min:1'],
             'delivery' => ['required', 'in:delivery,pickup'],
             'address' => ['nullable', 'string', 'max:500'],
             'phone' => ['nullable', 'string', 'max:30'],
+            'customer_name' => ['nullable', 'string', 'max:255'],
+            'customer_email' => ['nullable', 'email', 'max:255'],
             'payment_method' => ['sometimes', 'in:stripe,cod'],
         ]);
 
@@ -42,8 +44,8 @@ class StripeCheckoutController extends Controller
         $order = Order::create([
             'order_number' => 'FX'.now()->format('ymdHis').random_int(10, 99),
             'user_id' => $user?->id,
-            'customer_name' => $user?->name,
-            'customer_email' => $user?->email,
+            'customer_name' => $validated['customer_name'] ?? $user?->name,
+            'customer_email' => $validated['customer_email'] ?? $user?->email,
             'customer_phone' => $validated['phone'] ?? null,
             'delivery_address' => $validated['delivery'] === 'pickup' ? '店頭受取' : ($validated['address'] ?? null),
             'delivery' => $validated['delivery'],
@@ -61,8 +63,9 @@ class StripeCheckoutController extends Controller
         ]);
 
         foreach ($validated['cart'] as $cartItem) {
-            $product = isset($cartItem['id'])
-                ? Product::find($cartItem['id'])
+            $numericId = filter_var($cartItem['id'] ?? null, FILTER_VALIDATE_INT, FILTER_NULL_ON_FAILURE);
+            $product = $numericId !== null
+                ? Product::find((int) $numericId)
                 : Product::where('name', $cartItem['name'])->first();
 
             OrderItem::create([
@@ -150,17 +153,19 @@ class StripeCheckoutController extends Controller
                 Stripe::setApiKey(config('services.stripe.secret'));
                 $session = Session::retrieve($sessionId);
                 $paymentIntentId = $session->payment_intent;
+
+                if ($session->payment_status === 'paid') {
+                    $order->update([
+                        'payment_status' => 'Paid',
+                        'payment_status_normalized' => 'paid',
+                        'stripe_payment_intent_id' => $paymentIntentId,
+                        'status' => $order->status === 'Canceled' ? 'Canceled' : 'Preparing',
+                        'order_status' => $order->order_status === 'Canceled' ? 'Canceled' : 'Preparing',
+                    ]);
+                }
             } catch (\Throwable $exception) {
                 report($exception);
             }
-
-            $order->update([
-                'payment_status' => 'Paid',
-                'payment_status_normalized' => 'paid',
-                'stripe_payment_intent_id' => $paymentIntentId,
-                'status' => 'Preparing',
-                'order_status' => 'Preparing',
-            ]);
         }
 
         return view('checkout-success', ['sessionId' => $sessionId]);
